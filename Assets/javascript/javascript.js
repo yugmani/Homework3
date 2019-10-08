@@ -1,79 +1,111 @@
- //var aContainer = document.querySelector(".content");
+ 
+// Variable Declarations. 
+
  var password= "";
+ var charEach = "";
+ var specialEach = "";
  var numberCount = 0;
  var lowercaseCount=0;
  var uppercaseCount=0;
  var symbolCount=0;
+ var upper = 0;
+ //var specialChar = "";
  var incrementEl = document.querySelector("#increment");
  var clipEl = document.querySelector("#clip");
- var passwEl  = document.querySelector("#passw")
+ var passwEl  = document.querySelector("#passw");
+ var newPage = document.querySelector("#countPass");
+ 
 
  
- 
- //aContainer.style.textAlign= "center";
-// aContainer.style.margin = "5%";
-// aContainer.style.padding = "5px";
 
-
- //var wrapText = document.querySelector(".wrapper");
- //wrapText.style.textAlign= "left";
- //wraptText.stlye.margin = "10px";
- //wrapText.style.padding = "5px";
-
+// Function to setpass the final output in the page.
         
         function setPassText () {
             
             passwEl.textContent = password;
             
+            newPage.textContent = "Total Symbols: "+ symbolCount +"   "+ "Total Numbers: "+numberCount + "   " + "Total Lowercase: "+lowercaseCount+ "   " + "Total Uppercase: "+upper;
+            
         }       
 
         
   
+ // Eventlistener function to generate password
+
  incrementEl.addEventListener("click", function() {
-    
-      
+        
+        // Reinitialize the variables
         password= "";
         numberCount= 0;
+        uppercaseCount = 0;
+        lowercaseCount = 0;
+        symbolCount=0;
+        upper = 0;
+        
+        // list of valid characters for password.
         let listChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!#$%&*@~^()_+";
         
+        // list of valid symbols.
+        let specialChar = "!#$%&*@~^()_+";
         
-        var plength = prompt("how long password do you want ? [min=8 & max=128] ?");
+        var plength = prompt("How long password do you want ? [min=8 & max=128] ?");
         length = parseInt(plength, 10);
         
+        //validation for the length of password length.
+            
             if (length<8||length>128) {
-            alert("Criteria for password length is not met. Password must have minimum 8 and maximum 128 characters. Try again!")
-            return;
+                alert("Password length criteria is not met. Password length must be minimum 8 and maximum 128. Try again!")
+                return;
             }
 
-        else {
-                alert (length);
-                console.log(typeof length);
+            else {
+                   for (var i=0; i<length; i++) {
+                
+                    // Generating random characters.
 
-                    for (var i=0; i<length; i++) {
-
-                    password = password + listChar.charAt(Math.floor(Math.random() * listChar.length));
+                    charEach = listChar.charAt(Math.floor(Math.random() * listChar.length));
+                  
                     
-                    // `if (password.match(/[a-zA-Z0-9][a-zA-Z0-9]+/)){
-                         
-                    //     return;
+                    // validating special characters, numbers, lowercase and uppercase.
+
+                    for (var k=0; k < specialChar.length; k++) {
                         
-                    // }
-
+                        specialEach = specialChar.charAt(k);
+                        
+                            if (charEach == specialEach) {
+                            symbolCount = symbolCount + 1;
+                            
+                            }
+                    }
                     
-
-                    // else if (password.match(/[!#$%&*@~^()_+]+/)) {
+                    if (!isNaN(parseInt(charEach)*1)) {
                        
-                    //     return;
-                    // }
-                    // else {
-                    //     return; false;
-                    // }`
+                        numberCount = numberCount + 1;
+                    }
+
+                    else if (charEach == charEach.toUpperCase()) {
+                        
+                        uppercaseCount = uppercaseCount + 1;
+                        
+                    }
+
+                    else if (charEach == charEach.toLowerCase()) {
+                        
+                        lowercaseCount = lowercaseCount +1;
+                      
+                    }  
 
 
+                    password = password + charEach;
+                    
                     }
                    
-                    alert(password);
-                    console.log(password);
+                   // validating number of each characters.
+                    if (symbolCount<1 || numberCount<1 || lowercaseCount<1 ||uppercaseCount<1 ) {
+                        alert ("Invalid Password: Each type of characters not included !")
+                       return;
+                    }
+                    upper = uppercaseCount - symbolCount;
                     
                     setPassText();
                     
